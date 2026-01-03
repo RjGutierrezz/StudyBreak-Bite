@@ -7,20 +7,30 @@ module.exports = {
     extend: {
       colors: {
         background: {
-          100: '#F7F7F7'
+          100: '#e6e3e3'
         },
         border: {
           100: '#D1D1D1'
         },
-        primary: {
-          100: '#9D2235'
-        },
+        primary: "#9D2235",
         cards: {
           100: '#FFFFFF'
         },
         text: {
           100: '#1C1C1C',
           50: '#6B6B6B'
+        },
+        white: {
+          DEFAULT: "#ffffff",
+          100: "#fafafa",
+          200: "#FE8C00",
+        },
+        gray: {
+          100: "#878787",
+          200: "#878787",
+        },
+        dark: {
+          100: "#181C2E",
         },
         error: '#F5A623',
         success: '#2E7D32',
