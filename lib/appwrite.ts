@@ -1,12 +1,17 @@
-import { CreateUserParams, SignInParams } from "@/type";
-import { Account, Avatars, Client, Databases, ID, Query } from "react-native-appwrite";
+import { CreateUserParams, GetMenuParams, SignInParams } from "@/type";
+import { Account, Avatars, Client, Databases, ID, Query, Storage } from "react-native-appwrite";
 
 export const appwriteConfig = {
   endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT,
   platform: "com.rovergutierrez.studybreak-bite",
   projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID,
   databaseId: '69588ba80000ec3ddce4',
+  bucketId: '695b1e230023a6aed1d5',
   userCollectionId: '6959ba8c0022d900221d',
+  categoriesCollectionId: '695b1a5e001361fe702b',
+  menuCollectionId: '695b1ac50016e7596311',
+  customizationsCollectionId: '695b1c14001098b90c2b',
+  menuCustomizationsCollectionId: '695b1d0600139d2255e2',
 }
 
 // Function that creates a new user account, their session, and store them in the database
@@ -19,6 +24,9 @@ client
 
 export const account = new Account (client);
 export const databases = new Databases(client);
+
+// adding storage for seed database
+export const storage = new Storage (client);
 const avatars = new Avatars (client);
 
 export const createUser = async ({ email, password, name}: CreateUserParams) => {
@@ -71,6 +79,37 @@ export const getCurrentUser = async() => {
 
   } catch(e) {
     console.log(e)
+    throw new Error(e as string)
+  }
+}
+
+
+export const getMenu = async ({category, query}: GetMenuParams) => {
+  try {
+    const queries: string[] = [];
+    
+    if(category) queries.push(Query.equal('categories', category))
+    if(query) queries.push(Query.search('name', query));
+
+    const menus = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.menuCollectionId,
+      queries
+    )
+
+    return menus.documents;
+  } catch(e) {
+    throw new Error(e as string);
+  }
+}
+
+export const getCategories = async() => {
+  try {
+    const categories = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.categoriesCollectionId,
+    )
+  } catch (e) {
     throw new Error(e as string)
   }
 }
