@@ -1,4 +1,5 @@
 import CartButton from '@/components/CartButton'
+import Filter from '@/components/Filter'
 import MenuCard from '@/components/MenuCard'
 import { getCategories, getMenu } from '@/lib/appwrite'
 import useAppwrite from '@/lib/useAppwrite'
@@ -8,6 +9,7 @@ import { useLocalSearchParams } from 'expo-router'
 import React, { useEffect } from 'react'
 import { FlatList, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { SearchBar } from 'react-native-screens'
 
 const Search = () => {
 
@@ -59,8 +61,11 @@ const Search = () => {
             <CartButton />
           </View>
 
-          <Text>Search Input</Text>
-          <Text>Filter</Text>
+          {/* Search bar configurations */}
+          <SearchBar/>
+
+          {/* Filter functionality */}
+          <Filter categories={categories!}/>
         </View>
       )}
 
