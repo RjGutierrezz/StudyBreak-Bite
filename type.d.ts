@@ -35,7 +35,7 @@ export interface CartItemType {
     price: number;
     image_url: string;
     quantity: number;
-    customizations?: CartCustomization[];
+    customizations: CartCustomization[];
 }
 
 export interface CartStore {
