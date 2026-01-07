@@ -89,6 +89,11 @@
         @apply relative size-28 border-white border-2 rounded-full;
     }
 
+    .logout-btn {
+       @apply bg-[#fcd9df] rounded-full border-2 border-primary w-full flex flex-row justify-center py-4 px-6;
+    }
+
+
     .profile-edit {
         @apply flex items-center justify-center absolute bottom-2 right-0 bg-primary border-2 border-white size-7 p-2 rounded-full;
     }

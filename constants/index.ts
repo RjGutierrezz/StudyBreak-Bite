@@ -17,6 +17,7 @@ import search from "@/assets/icons/search.png";
 import star from "@/assets/icons/star.png";
 import trash from "@/assets/icons/trash.png";
 import user from "@/assets/icons/user.png";
+import businessman from "@/assets/images/businessman.png";
 import arrowBack from "../assets/icons/arrow-back.png";
 
 import avatar from "@/assets/images/avatar.png";
@@ -199,4 +200,5 @@ export const images = {
     star,
     trash,
     user,
+    businessman
 };
