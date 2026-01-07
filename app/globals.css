@@ -18,7 +18,7 @@
 
 @layer components {
     .cart-btn {
-        @apply flex items-center justify-center size-10 rounded-full bg-dark-100;
+        @apply flex items-center justify-center size-10 rounded-full bg-["#fcd9df"] border-2 border-white;
     }
 
     .cart-badge {
@@ -86,11 +86,15 @@
     }
 
     .profile-avatar {
-        @apply relative size-28 border-white border-2 rounded-full;
+        @apply relative size-28 border-white border-2 rounded-full bg-[#fcd9df];
     }
 
     .logout-btn {
-       @apply bg-[#fcd9df] rounded-full border-2 border-primary w-full flex flex-row justify-center py-4 px-6;
+        @apply bg-[#fcd9df] rounded-full border-2 border-primary w-full flex flex-row justify-center py-4 px-6 mt-4;
+    }
+
+    .editprofile-btn {
+        @apply bg-[#9cf0b2] rounded-full border-2 border-[#1a8737] w-full flex flex-row justify-center py-4 px-6 mt-4;
     }
 
 

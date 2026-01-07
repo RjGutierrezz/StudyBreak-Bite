@@ -10,7 +10,7 @@ const CartButton = () => {
 
   return (
     <TouchableOpacity className='cart-btn' onPress={()=> router.push('/cart')}>
-      <Image source={images.bag} className="size-5" resizeMode='contain'/>
+      <Image source={images.bag} className="size-5" resizeMode='contain' style={{ tintColor: "#9D2235" }}/>
       {totalItems > 0 && (
         <View className="cart-badge">
           <Text className='small-bold text-white'>{totalItems}</Text>

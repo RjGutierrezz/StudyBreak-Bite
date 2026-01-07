@@ -1,7 +1,7 @@
-
 import CustomButton from '@/components/CustomButton'
 import CustomInput from '@/components/CustomInput'
 import { signIn } from '@/lib/appwrite'
+import useAuthStore from '@/store/auth.store'
 import { Link, router } from 'expo-router'
 import React, { useState } from 'react'
 import { Alert, Text, View } from 'react-native'
@@ -12,6 +12,14 @@ const SignIn = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState({email: '', password: ''});
   
+  const { fetchAuthenticatedUser, isAuthenticated } = useAuthStore();
+
+  // if already authed, don't show sign-in
+  if (isAuthenticated) {
+    router.replace('/(tabs)');
+    return null;
+  }
+
   const submit = async () => {
     const {email, password} = form;
     if(!form.email || !form.password) return Alert.alert('Error', 'Please enter your valid email & password.')
@@ -21,8 +29,11 @@ const SignIn = () => {
     try {
 
       await signIn({email, password})
-      
-      router.replace('/')
+
+      // Critical: sync zustand state with the new session
+      await fetchAuthenticatedUser();
+
+      router.replace('/(tabs)')
     } catch (error: any) {
       Alert.alert('Error', error.message);
     } finally {

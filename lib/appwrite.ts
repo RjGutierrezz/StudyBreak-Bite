@@ -1,4 +1,5 @@
 import { CreateUserParams, GetMenuParams, SignInParams } from "@/type";
+import { router } from "expo-router";
 import { Account, Avatars, Client, Databases, ID, Query, Storage } from "react-native-appwrite";
 
 export const appwriteConfig = {
@@ -59,6 +60,15 @@ export const signIn = async ({email, password}: SignInParams) => {
     const session = await account.createEmailPasswordSession(email, password)
   } catch(e) {
     throw new Error(e as string)
+  }
+}
+
+export const signOut = async() => {
+  try {
+    await account.deleteSession('current')
+    router.replace('/(auth)/sign-in')
+  } catch(e) {
+    throw new Error(e as string);
   }
 }
 

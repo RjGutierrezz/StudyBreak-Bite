@@ -1,4 +1,5 @@
 import CustomHeader from '@/components/CustomHeader'
+import EditProfile from '@/components/EditProfile'
 import Logout from '@/components/Logout'
 import ProfilePhoto from '@/components/ProfilePhoto'
 import { images } from '@/constants'
@@ -131,7 +132,9 @@ const Profile = () => {
               </View>
 
             </View>
-            {/* <EditProfile title='Edit Profile'/> */}
+
+
+            <EditProfile title='Edit Profile'/>
             <Logout 
               title='Logout'
               leftIcon={images.logout}
