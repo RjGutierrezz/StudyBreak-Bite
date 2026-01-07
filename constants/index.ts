@@ -1,3 +1,4 @@
+import arrowBack from "@/assets/icons/arrow-back.png";
 import arrowDown from "@/assets/icons/arrow-down.png";
 import arrowRight from "@/assets/icons/arrow-right.png";
 import bag from "@/assets/icons/bag.png";
@@ -17,7 +18,6 @@ import search from "@/assets/icons/search.png";
 import star from "@/assets/icons/star.png";
 import trash from "@/assets/icons/trash.png";
 import user from "@/assets/icons/user.png";
-import arrowBack from "../assets/icons/arrow-back.png";
 
 import avatar from "@/assets/images/avatar.png";
 import avocado from "@/assets/images/avocado.png";
@@ -25,6 +25,7 @@ import bacon from "@/assets/images/bacon.png";
 import burgerOne from "@/assets/images/burger-one.png";
 import burgerTwo from "@/assets/images/burger-two.png";
 import buritto from "@/assets/images/buritto.png";
+import businessman from "@/assets/images/businessman.png";
 import cheese from "@/assets/images/cheese.png";
 import coleslaw from "@/assets/images/coleslaw.png";
 import cucumber from "@/assets/images/cucumber.png";
@@ -199,4 +200,5 @@ export const images = {
     star,
     trash,
     user,
+    businessman,
 };

@@ -41,6 +41,10 @@
         @apply bg-primary rounded-full p-3 w-full flex flex-row justify-center;
     }
 
+    .logout-btn {
+        @apply bg-primary rounded-full p-3 w-full flex flex-row justify-center;
+    }
+
     .custom-header {
         @apply w-full flex flex-row items-center justify-between mb-10;
     }
@@ -66,7 +70,7 @@
     }
 
     .profile-field__icon {
-        @apply size-12 rounded-full bg-primary/10 flex items-center justify-center mr-3;
+        @apply size-20 rounded-full bg-primary/10 flex items-center justify-center mr-3;
     }
 
     .searchbar {
@@ -86,7 +90,7 @@
     }
 
     .profile-avatar {
-        @apply relative size-28 border-white border-2 rounded-full;
+        @apply relative size-35 border-white border-2 rounded-full bg-white;
     }
 
     .profile-edit {

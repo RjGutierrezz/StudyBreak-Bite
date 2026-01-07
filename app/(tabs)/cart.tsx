@@ -71,8 +71,8 @@ const Cart = () => {
                 label={`Total`}
                 // needs this to be dynamic
                 value={`$${(totalPrice + 5 - 0.5).toFixed(2)}`}
-                labelStyle='base-hold !text-dark-100'
-                valueStyle='base-bold ~text-dark-100 !text-right'
+                labelStyle='base-bold !text-dark-100'
+                valueStyle='base-bold !text-dark-100 !text-right'
               />
 
             </View>
