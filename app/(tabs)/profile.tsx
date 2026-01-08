@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   inputUnderlineWrap: {
     alignSelf: 'flex-start', // shrink to content
     borderBottomWidth: 1,
-    borderBottomColor: 'black',
+    borderBottomColor: '#780000',
   },
   input: {
     fontSize: 16,

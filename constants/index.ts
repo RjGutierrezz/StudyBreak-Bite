@@ -25,14 +25,18 @@ import avocado from "@/assets/images/avocado.png";
 import bacon from "@/assets/images/bacon.png";
 import burgerOne from "@/assets/images/burger-one.png";
 import burgerTwo from "@/assets/images/burger-two.png";
+import burger from "@/assets/images/burger.png";
 import buritto from "@/assets/images/buritto.png";
 import cheese from "@/assets/images/cheese.png";
 import coleslaw from "@/assets/images/coleslaw.png";
 import cucumber from "@/assets/images/cucumber.png";
 import emptyState from "@/assets/images/empty-state.png";
 import fries from "@/assets/images/fries.png";
+
+import backk from "@/assets/images/backk.png";
 import loginGraphic from "@/assets/images/login-graphic.png";
 import logo from "@/assets/images/logo.png";
+import logoo from "@/assets/images/logoo.png";
 import mozarellaSticks from "@/assets/images/mozarella-sticks.png";
 import mushrooms from "@/assets/images/mushrooms.png";
 import onionRings from "@/assets/images/onion-rings.png";
@@ -40,6 +44,7 @@ import onions from "@/assets/images/onions.png";
 import pizzaOne from "@/assets/images/pizza-one.png";
 import salad from "@/assets/images/salad.png";
 import success from "@/assets/images/success.png";
+import summermeal from "@/assets/images/summermeal.png";
 import tomatoes from "@/assets/images/tomatoes.png";
 
 export const CATEGORIES = [
@@ -69,13 +74,13 @@ export const offers = [
     {
         id: 1,
         title: "SUMMER COMBO",
-        image: burgerOne,
+        image: summermeal,
         color: "#780000",
     },
     {
         id: 2,
         title: "BURGER BASH",
-        image: burgerTwo,
+        image: burger,
         color: "#c1121f",
     },
     {
@@ -172,6 +177,7 @@ export const images = {
     fries,
     loginGraphic,
     logo,
+    logoo,
     mozarellaSticks,
     mushrooms,
     onionRings,
@@ -199,6 +205,7 @@ export const images = {
     search,
     star,
     trash,
+    backk,
     user,
     businessman
 };

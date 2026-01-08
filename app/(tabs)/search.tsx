@@ -2,13 +2,14 @@ import CartButton from '@/components/CartButton'
 import Filter from '@/components/Filter'
 import MenuCard from '@/components/MenuCard'
 import SearchBar from '@/components/SearchBar'
+import { images } from '@/constants'
 import { getCategories, getMenu } from '@/lib/appwrite'
 import useAppwrite from '@/lib/useAppwrite'
 import { MenuItem } from '@/type'
 import cn from 'clsx'
 import { useLocalSearchParams } from 'expo-router'
 import React, { useEffect } from 'react'
-import { FlatList, Text, View } from 'react-native'
+import { FlatList, Image, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 const Search = () => {
@@ -69,8 +70,16 @@ const Search = () => {
         </View>
       )}
 
-      ListEmptyComponent={() => !loading && <Text>Well this is awkward 😰 No result found.</Text>}
-
+      ListEmptyComponent={() => !loading && (
+        <View className='flex items-center justify-center mt-10'>
+          <Image source={images.emptyState} 
+          className="w-40 h-40 mb-4" // Adjust width, height, and margin as needed
+          resizeMode="contain"
+          />
+          <Text>Well this is awkward 😰 No result found.</Text>}
+        </View>
+        )
+      }
       />
       {/* Used to seed our database <Button title="Seed" onPress={() => seed().catch((error) => console.log('Failed to seed the database', error))} /> */} 
     </SafeAreaView>

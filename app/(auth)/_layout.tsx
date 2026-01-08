@@ -12,12 +12,12 @@ export default function _Layout() {
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <ScrollView className='bg-white h-full' keyboardShouldPersistTaps="handled">
+      <ScrollView className='bg-background-100 h-full' keyboardShouldPersistTaps="handled">
         <View className="w-full relative" style={{height: Dimensions.get('screen').height / 2.25}}>
           {/* Background */}
-          <ImageBackground source= {images.loginGraphic} className='size-full rounded-b-lg' resizeMode="stretch" />
+          <ImageBackground source= {images.backk} className='size-full rounded-b-lg' resizeMode="stretch" />
           {/* Logo */}
-          <Image source={images.logo} className='self-center size-48 absolute -bottom-16 z-10' />
+          <Image source={images.logoo} className='self-center size-48 absolute -bottom-16 z-10' />
         </View>
         <Slot/>
       </ScrollView>
