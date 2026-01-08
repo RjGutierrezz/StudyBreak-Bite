@@ -4,12 +4,16 @@ import Logout from '@/components/Logout';
 import ProfilePhoto from '@/components/ProfilePhoto';
 import { images } from '@/constants';
 import { getCurrentUser, updateUser } from '@/lib/appwrite';
+import * as ImagePicker from 'expo-image-picker';
 import React, { useEffect, useState } from 'react';
 import {
+  Alert,
   FlatList,
   Image,
   KeyboardAvoidingView,
+  Linking,
   Platform,
+  Pressable,
   StyleSheet,
   Text,
   TextInput,
@@ -39,6 +43,7 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [userDocId, setUserDocId] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [localAvatarUri, setLocalAvatarUri] = useState<string | null>(null);
 
   const [profile, setProfile] = useState({
     name: '',
@@ -64,6 +69,8 @@ const Profile = () => {
           phone: user.phone != null ? String(user.phone) : prev.phone,
           address: user.address ?? prev.address,
         }));
+
+        // avatar placeholder is handled by <ProfilePhoto /> when uri is undefined
       } catch {
         // keep local defaults if fetch fails
       }
@@ -106,6 +113,49 @@ const Profile = () => {
     }
   };
 
+  const handlePickProfilePhoto = async () => {
+    try {
+      const perm = await ImagePicker.getMediaLibraryPermissionsAsync();
+      let granted = perm.granted;
+
+      if (!granted) {
+        const req = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        granted = req.granted;
+      }
+
+      if (!granted) {
+        Alert.alert(
+          'Permission needed',
+          'Please allow photo library access to choose a profile photo.',
+          [
+            { text: 'Cancel', style: 'cancel' },
+            { text: 'Open Settings', onPress: () => Linking.openSettings() },
+          ]
+        );
+        return;
+      }
+
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.85,
+        exif: false,
+      });
+
+      if (result.canceled) return;
+
+      const uri = result.assets?.[0]?.uri;
+      if (!uri) return;
+
+      // local-only preview; if user never picks, we keep placeholder
+      setLocalAvatarUri(uri);
+    } catch (e) {
+      console.log('[ImagePicker] error:', e);
+      Alert.alert('Error', 'Could not open photo library.');
+    }
+  };
+
   return (
     <SafeAreaView className="bg-background-100 h-full">
       <KeyboardAvoidingView
@@ -122,7 +172,14 @@ const Profile = () => {
           ListFooterComponent={
             <View className="gap-5">
               <View className="flex items-center justify-center">
-                <ProfilePhoto />
+                <Pressable
+                  onPress={handlePickProfilePhoto}
+                  disabled={isSaving}
+                  hitSlop={10}
+                  android_ripple={{ color: 'rgba(0,0,0,0.06)', borderless: true }}
+                >
+                  <ProfilePhoto uri={localAvatarUri ?? undefined} />
+                </Pressable>
               </View>
               <View className="mt-6 border-white p-5 rounded-2xl bg-white">
                 {/* Name */}

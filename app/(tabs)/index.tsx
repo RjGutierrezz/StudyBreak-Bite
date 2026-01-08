@@ -1,15 +1,38 @@
 import CartButton from "@/components/CartButton";
 import { images, offers } from "@/constants";
+import { getCurrentUser } from "@/lib/appwrite";
 import useAuthStore from "@/store/auth.store";
 import cn from 'clsx';
-import { Fragment } from "react";
+import { router } from "expo-router";
+import { Fragment, useEffect, useState } from "react";
 import { FlatList, Image, Pressable, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
- 
-export default function Index() {
 
-  const { user } = useAuthStore();
+
+
+export default function Index() {
+  
+  const {user} = useAuthStore();
+  const [address, setAddress] = useState<string>('Loading...')
+
+  useEffect(() => {
+    const fetchAddress = async () => {
+      const userData = await getCurrentUser();
+      if (userData && userData.address) {
+        setAddress(userData.address)
+      } else {
+        setAddress("No address found")
+      }
+    }
+
+    fetchAddress();
+  }, [])
+
+  // Function to truncate the address
+  const truncateAddress = (addr: string) => {
+    return addr.length > 10 ? `${addr.slice(0, 10)}...` : addr;
+  };
 
   console.log("USER:", JSON.stringify(user, null, 2));
 
@@ -57,8 +80,11 @@ export default function Index() {
           <View className="flex-between flex-row w-full my-5 px-5">
             <View className="flex-start">
               <Text className="small-bold text-primary">DELIVER TO</Text>
-              <TouchableOpacity className="flex-center flex-row gap-x-1 mt-0.5"> 
-                <Text className="paragraph-bold text-text-100">{profile.address}</Text>
+              <TouchableOpacity 
+                className="flex-center flex-row gap-x-1 mt-0.5"
+                onPress={() => router.push("/(tabs)/profile")}
+              > 
+                <Text className="paragraph-bold text-text-100">{truncateAddress(address)}</Text>
                 <Image source={images.arrowDown} className="size-3" resizeMode="contain"/>
                 
               </TouchableOpacity>

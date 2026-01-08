@@ -1,5 +1,5 @@
 import { CreateUserParams, GetMenuParams, SignInParams } from "@/type";
-import { Account, Avatars, Client, Databases, ID, Query, Storage } from "react-native-appwrite";
+import { Account, Avatars, Client, Databases, ID, Query } from "react-native-appwrite";
 
 export const appwriteConfig = {
   endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT,
@@ -25,8 +25,6 @@ client
 export const account = new Account (client);
 export const databases = new Databases(client);
 
-// adding storage for seed database
-export const storage = new Storage (client);
 const avatars = new Avatars (client);
 
 export const createUser = async ({ email, password, name}: CreateUserParams) => {
