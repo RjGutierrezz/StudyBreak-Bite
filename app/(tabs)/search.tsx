@@ -32,7 +32,7 @@ const Search = () => {
   const {data: categories} = useAppwrite({fn: getCategories});
 
   return (
-    <SafeAreaView className='bg-white h-full'>
+    <SafeAreaView className='bg-background-100 h-full'>
       <FlatList data={data} renderItem={({item, index}) => {
 
         // To cascade the items

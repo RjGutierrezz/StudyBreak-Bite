@@ -34,7 +34,7 @@ const Cart = () => {
   const totalPrice = getTotalPrice();
 
   return (
-    <SafeAreaView className='bg-white h-full'>
+    <SafeAreaView className='bg-background-100 h-full'>
       <FlatList 
         data={items} 
         renderItem={({ item }) => <CartItem item={item} />}

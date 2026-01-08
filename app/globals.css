@@ -94,7 +94,7 @@
     }
 
     .editprofile-btn {
-        @apply bg-[#9cf0b2] rounded-full border-2 border-[#1a8737] w-full flex flex-row justify-center py-4 px-6 mt-4;
+        @apply bg-[#CEE7F7] rounded-full border-2 border-[#003049] w-full flex flex-row justify-center py-4 px-6 mt-4;
     }
 
 

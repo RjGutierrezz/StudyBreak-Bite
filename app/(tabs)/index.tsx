@@ -58,7 +58,7 @@ export default function Index() {
             <View className="flex-start">
               <Text className="small-bold text-primary">DELIVER TO</Text>
               <TouchableOpacity className="flex-center flex-row gap-x-1 mt-0.5"> 
-                <Text className="paragraph-bold text-text-100">United States</Text>
+                <Text className="paragraph-bold text-text-100">{profile.address}</Text>
                 <Image source={images.arrowDown} className="size-3" resizeMode="contain"/>
                 
               </TouchableOpacity>

@@ -7,12 +7,12 @@ module.exports = {
     extend: {
       colors: {
         background: {
-          100: '#f5f1f0'
+          100: '#FDF0D5'
         },
         border: {
           100: '#D1D1D1'
         },
-        primary: "#9D2235",
+        primary: "#780000",
         cards: {
           100: '#FFFFFF'
         },

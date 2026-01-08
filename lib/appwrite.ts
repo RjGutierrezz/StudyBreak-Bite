@@ -1,5 +1,4 @@
 import { CreateUserParams, GetMenuParams, SignInParams } from "@/type";
-import { router } from "expo-router";
 import { Account, Avatars, Client, Databases, ID, Query, Storage } from "react-native-appwrite";
 
 export const appwriteConfig = {
@@ -15,7 +14,7 @@ export const appwriteConfig = {
   menuCustomizationsCollectionId: '695b1d0600139d2255e2',
 }
 
-// Function that creates a new user account, their session, and store them in the database
+// Creates a new user account, their session, and store them in the database
 export const client = new Client();
 
 client
@@ -66,7 +65,6 @@ export const signIn = async ({email, password}: SignInParams) => {
 export const signOut = async() => {
   try {
     await account.deleteSession('current')
-    router.replace('/(auth)/sign-in')
   } catch(e) {
     throw new Error(e as string);
   }
@@ -125,3 +123,31 @@ export const getCategories = async() => {
     throw new Error(e as string)
   }
 }
+
+export const updateUser = async (
+  userId: string,
+  { name, email, phone, address }: { name: string; email: string; phone: string | number; address: string }
+) => {
+  try {
+    const phoneAsString =
+      typeof phone === 'number'
+        ? String(phone)
+        : (phone ?? '').toString().trim();
+
+    const updatedUser = await databases.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.userCollectionId,
+      userId,
+      {
+        name,
+        email,
+        phone: phoneAsString,
+        address,
+      }
+    );
+
+    return updatedUser;
+  } catch (e) {
+    throw new Error(e as string);
+  }
+};
