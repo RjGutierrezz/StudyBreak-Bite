@@ -3,9 +3,11 @@
       <img src="assets/images/mockup.png" alt="Project Banner">
     </a>
   <br />
+</div>
 
+<h3 align="center">StudyBreak-Bite app</h3>
 
-## Welcome to your StudyBreak-Bite app 👋
+## Welcome to my app 👋
 
 This app is a mobile food discovery and delivery concept designed to focus and promote efficient university food options for the students. The app focuses on providing students their fuel to their studies by allowing them to receive their meals or food to their specific location so they can avoid losing their flow and work without unterruption as well as order their food online for a pickup so they dont have to waste their important time standing in the line jsut to get their food. 
 
@@ -24,7 +26,6 @@ EXPO_PUBLIC_APPWRITE_PROJECT_ID=your_ID_from_appwrite
 EXPO_PUBLIC_APPWRITE_PROJECT_NAME="StudyBreak-Bite"
 EXPO_PUBLIC_APPWRITE_ENDPOINT=https://sfo.cloud.appwrite.io/v1
 ```
-
 # Type the following to your terminal to give your device permission to run the script file
 ```bash
 chmod 755 run.sh
