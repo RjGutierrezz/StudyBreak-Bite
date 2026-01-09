@@ -1,5 +1,5 @@
 import CustomHeader from '@/components/CustomHeader';
-import { images } from '@/constants';
+import { images, sides as SIDES, toppings as TOPPINGS } from '@/constants';
 import { appwriteConfig, getMenu } from '@/lib/appwrite';
 import { useCartStore } from '@/store/cart.store';
 import { useLocalSearchParams } from 'expo-router';
@@ -16,10 +16,64 @@ const ProductDetails = () => {
   const { addItem } = useCartStore();
 
   const [product, setProduct] = useState<any>(null);
-  const [selectedToppings, setSelectedToppings] = useState<string[]>([]);
-  const [totalPrice, setTotalPrice] = useState<number>(0);
+  const [selectedToppings, setSelectedToppings] = useState<Record<string, number>>({});
+  const [selectedSides, setSelectedSides] = useState<Record<string, number>>({});
   const [isLoading, setIsLoading] = useState(false);
   const [errorText, setErrorText] = useState<string | null>(null);
+
+  const basePrice = useMemo(() => Number(product?.price ?? 0), [product]);
+
+  const mergedToppings = useMemo(() => {
+    const fromProduct = Array.isArray(product?.customizations) ? product.customizations : [];
+    const base = fromProduct.length ? fromProduct : TOPPINGS;
+
+    return base.map((t: any) => {
+      const match = TOPPINGS.find(
+        (x) => String(x.name).toLowerCase() === String(t?.name).toLowerCase()
+      );
+
+      return {
+        ...t,
+        image: match?.image,
+        price: typeof t?.price === 'number' ? t.price : match?.price ?? 0,
+      };
+    });
+  }, [product]);
+
+  const mergedSides = useMemo(() => {
+    const fromProduct =
+      Array.isArray(product?.sides) ? product.sides :
+      Array.isArray(product?.sides_customizations) ? product.sides_customizations :
+      [];
+
+    const base = fromProduct.length ? fromProduct : SIDES;
+
+    return base.map((s: any) => {
+      const match = SIDES.find(
+        (x) => String(x.name).toLowerCase() === String(s?.name).toLowerCase()
+      );
+
+      return {
+        ...s,
+        image: match?.image,
+        price: typeof s?.price === 'number' ? s.price : match?.price ?? 0,
+      };
+    });
+  }, [product]);
+
+  const totalPrice = useMemo(() => {
+    const toppingsTotal = mergedToppings.reduce((sum, t: any) => {
+      const qty = selectedToppings[t.name] ?? 0;
+      return sum + Number(t.price ?? 0) * qty;
+    }, 0);
+
+    const sidesTotal = mergedSides.reduce((sum, s: any) => {
+      const qty = selectedSides[s.name] ?? 0;
+      return sum + Number(s.price ?? 0) * qty;
+    }, 0);
+
+    return basePrice + toppingsTotal + sidesTotal;
+  }, [basePrice, mergedToppings, mergedSides, selectedToppings, selectedSides]);
 
   useEffect(() => {
     let cancelled = false;
@@ -40,9 +94,16 @@ const ProductDetails = () => {
         if (cancelled) return;
 
         if (productDetails) {
-          setProduct(productDetails);
-          setSelectedToppings([]);
-          setTotalPrice(productDetails.price ?? 0);
+          const normalized = {
+            ...productDetails,
+            customizations: Array.isArray(productDetails?.customizations)
+              ? productDetails.customizations
+              : [],
+          };
+
+          setProduct(normalized);
+          setSelectedToppings({});
+          setSelectedSides({});
         } else {
           setProduct(null);
           setErrorText(`Product not found for id: ${id}`);
@@ -63,14 +124,48 @@ const ProductDetails = () => {
     };
   }, [id]);
 
-  const handleToggleTopping = (topping: string, price: number) => {
-    if (selectedToppings.includes(topping)) {
-      setSelectedToppings((prev) => prev.filter((t) => t !== topping));
-      setTotalPrice((prev) => prev - price);
-    } else {
-      setSelectedToppings((prev) => [...prev, topping]);
-      setTotalPrice((prev) => prev + price);
-    }
+  const increaseTopping = (name: string) => {
+    setSelectedToppings((prev) => ({ ...prev, [name]: (prev[name] ?? 0) + 1 }));
+  };
+
+  const decreaseTopping = (name: string) => {
+    setSelectedToppings((prev) => {
+      const nextQty = (prev[name] ?? 0) - 1;
+      if (nextQty <= 0) {
+        const { [name]: _, ...rest } = prev;
+        return rest;
+      }
+      return { ...prev, [name]: nextQty };
+    });
+  };
+
+  const removeTopping = (name: string) => {
+    setSelectedToppings((prev) => {
+      const { [name]: _, ...rest } = prev;
+      return rest;
+    });
+  };
+
+  const increaseSide = (name: string) => {
+    setSelectedSides((prev) => ({ ...prev, [name]: (prev[name] ?? 0) + 1 }));
+  };
+
+  const decreaseSide = (name: string) => {
+    setSelectedSides((prev) => {
+      const nextQty = (prev[name] ?? 0) - 1;
+      if (nextQty <= 0) {
+        const { [name]: _, ...rest } = prev;
+        return rest;
+      }
+      return { ...prev, [name]: nextQty };
+    });
+  };
+
+  const removeSide = (name: string) => {
+    setSelectedSides((prev) => {
+      const { [name]: _, ...rest } = prev;
+      return rest;
+    });
   };
 
   const handleAddToCart = () => {
@@ -80,6 +175,24 @@ const ProductDetails = () => {
       ? `${product.image_url}&project=${appwriteConfig.projectId}`
       : product.image_url;
 
+    const toppingsWithQty = Object.entries(selectedToppings).map(([name, quantity]) => {
+      const topping = mergedToppings.find((t: any) => t.name === name);
+      return { id: name, name: `Topping: ${name}`, price: Number(topping?.price ?? 0), quantity };
+    });
+
+    const sidesWithQty = Object.entries(selectedSides).map(([name, quantity]) => {
+      const side = mergedSides.find((s: any) => s.name === name);
+      return { id: name, name: `Side: ${name}`, price: Number(side?.price ?? 0), quantity };
+    });
+
+    const expandedCustomizations = [...toppingsWithQty, ...sidesWithQty].flatMap((c) =>
+      Array.from({ length: c.quantity }).map((_, idx) => ({
+        id: `${c.name}-${idx}`,
+        name: c.name,
+        price: c.price,
+      }))
+    );
+
     addItem({
       id: product.$id,
       name: product.name,
@@ -88,11 +201,7 @@ const ProductDetails = () => {
       rating: product.rating,
       calories: product.calories,
       protein: product.protein,
-      customizations: selectedToppings.map((topping) => ({
-        id: topping,
-        name: topping,
-        price: product.customizations?.find((c: any) => c.name === topping)?.price || 0,
-      })),
+      customizations: expandedCustomizations,
     });
   };
 
@@ -122,16 +231,73 @@ const ProductDetails = () => {
   return (
     <SafeAreaView className="bg-background-100 h-full">
       <FlatList
-        data={product.customizations || []}
-        keyExtractor={(item) => item.name}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            className="flex flex-row items-center justify-between p-4 border-b border-gray-200"
-            onPress={() => handleToggleTopping(item.name, item.price)}
-          >
-            <Text className="text-dark-100">{item.name}</Text>
-            <Text className="text-gray-200">${item.price.toFixed(2)}</Text>
-          </TouchableOpacity>
+        data={mergedSides}
+        keyExtractor={(item, index) => `${item?.name ?? "side"}-${index}`}
+        renderItem={({ item }) => {
+          const qty = selectedSides[item.name] ?? 0;
+
+          return (
+            <View className="cart-item flex-row items-center justify-between mb-3">
+              <View className="flex flex-row items-center gap-x-3 flex-1">
+                {item.image ? (
+                  <View className="w-12 h-12 rounded-lg overflow-hidden">
+                    <Image source={item.image} className="w-full h-full" resizeMode="cover" />
+                  </View>
+                ) : null}
+
+                <View className="flex-1">
+                  <Text className="base-bold text-dark-100">{item.name}</Text>
+                  <Text className="paragraph-bold text-primary mt-1">
+                    ${Number(item.price ?? 0).toFixed(2)}
+                  </Text>
+
+                  <View className="flex flex-row items-center gap-x-4 mt-2">
+                    <TouchableOpacity
+                      onPress={() => decreaseSide(item.name)}
+                      className="cart-item__actions"
+                      disabled={qty <= 0}
+                      style={{ opacity: qty <= 0 ? 0.4 : 1 }}
+                    >
+                      <Image
+                        source={images.minus}
+                        className="size-1/2"
+                        resizeMode="contain"
+                        tintColor={"#FF9C01"}
+                      />
+                    </TouchableOpacity>
+
+                    <Text className="base-bold text-dark-100">{qty}</Text>
+
+                    <TouchableOpacity
+                      onPress={() => increaseSide(item.name)}
+                      className="cart-item__actions"
+                    >
+                      <Image
+                        source={images.plus}
+                        className="size-1/2"
+                        resizeMode="contain"
+                        tintColor={"#FF9C01"}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+
+              <TouchableOpacity
+                onPress={() => removeSide(item.name)}
+                className="flex-center ml-2 shrink-0"
+                disabled={qty <= 0}
+                style={{ opacity: qty <= 0 ? 0.4 : 1 }}
+              >
+                <Image source={images.trash} className="size-5" resizeMode="contain" />
+              </TouchableOpacity>
+            </View>
+          );
+        }}
+        ListEmptyComponent={() => (
+          <View className="px-4 py-3">
+            <Text className="text-gray-200">No sides available for this item.</Text>
+          </View>
         )}
         contentContainerClassName="pb-28 px-5 pt-5"
         ListHeaderComponent={() => (
@@ -142,7 +308,7 @@ const ProductDetails = () => {
               {/*Left part of the screen */}
               <View className='flex-1'>
                 <Text className="h3-bold mt-1 mb-4" style={{fontSize: 24}}>{product.name}</Text>
-                    <View className='flex flex-row items-center gap-x-3"'>
+                    <View className='flex flex-row items-center gap-x-3'>
                       {Array(5)
                         .fill(0)
                         .map((_, index) => (
@@ -188,7 +354,74 @@ const ProductDetails = () => {
               </View>
             </View>
 
-            <Text className='h3-bold'>Toppings</Text>
+            <Text className='h3-bold'>Additional Toppings</Text>
+
+            {mergedToppings.map((item: any, index: number) => {
+              const qty = selectedToppings[item.name] ?? 0;
+
+              return (
+                <View
+                  key={`${item?.name ?? "topping"}-${index}`}
+                  className="cart-item flex-row items-center justify-between mb-3"
+                >
+                  <View className="flex flex-row items-center gap-x-3 flex-1">
+                    {item.image ? (
+                      <View className="w-12 h-12 rounded-lg overflow-hidden">
+                        <Image source={item.image} className="w-full h-full" resizeMode="cover" />
+                      </View>
+                    ) : null}
+
+                    <View className="flex-1">
+                      <Text className="base-bold text-dark-100">{item.name}</Text>
+                      <Text className="paragraph-bold text-primary mt-1">
+                        ${Number(item.price ?? 0).toFixed(2)}
+                      </Text>
+
+                      <View className="flex flex-row items-center gap-x-4 mt-2">
+                        <TouchableOpacity
+                          onPress={() => decreaseTopping(item.name)}
+                          className="cart-item__actions"
+                          disabled={qty <= 0}
+                          style={{ opacity: qty <= 0 ? 0.4 : 1 }}
+                        >
+                          <Image
+                            source={images.minus}
+                            className="size-1/2"
+                            resizeMode="contain"
+                            tintColor={"#FF9C01"}
+                          />
+                        </TouchableOpacity>
+
+                        <Text className="base-bold text-dark-100">{qty}</Text>
+
+                        <TouchableOpacity
+                          onPress={() => increaseTopping(item.name)}
+                          className="cart-item__actions"
+                        >
+                          <Image
+                            source={images.plus}
+                            className="size-1/2"
+                            resizeMode="contain"
+                            tintColor={"#FF9C01"}
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </View>
+
+                  <TouchableOpacity
+                    onPress={() => removeTopping(item.name)}
+                    className="flex-center ml-2 shrink-0"
+                    disabled={qty <= 0}
+                    style={{ opacity: qty <= 0 ? 0.4 : 1 }}
+                  >
+                    <Image source={images.trash} className="size-5" resizeMode="contain" />
+                  </TouchableOpacity>
+                </View>
+              );
+            })}
+
+            <Text className='h3-bold mt-2'>Additional Sides</Text>
           </View>
         )}
         ListFooterComponent={() => (

@@ -47,6 +47,7 @@ const Cart = () => {
             <Image source={images.emptyCart} 
               className="w-30 h-30 mb-4" 
             />
+            <Text className='base-semibold'>Your cart is Empty</Text>
           </View>
         )}
         ListFooterComponent={() => totalItems > 0 && (
