@@ -76,7 +76,7 @@ const Search = () => {
           className="w-40 h-40 mb-4" // Adjust width, height, and margin as needed
           resizeMode="contain"
           />
-          <Text>Well this is awkward 😰 No result found.</Text>}
+          <Text>Well this is awkward 😰 No result found.</Text>
         </View>
         )
       }

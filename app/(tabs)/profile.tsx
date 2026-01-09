@@ -168,7 +168,7 @@ const Profile = () => {
           contentContainerClassName="pb-28 px-5 pt-5"
           keyboardShouldPersistTaps="handled" // Prevent keyboard from dismissing on taps
           keyboardDismissMode="on-drag" // Dismiss keyboard only when dragging
-          ListHeaderComponent={() => <CustomHeader title="Profile" />}
+          ListHeaderComponent={() => <CustomHeader title="Profile" showSearch={false} />}
           ListFooterComponent={
             <View className="gap-5">
               <View className="flex items-center justify-center">

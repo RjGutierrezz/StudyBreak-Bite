@@ -1,11 +1,12 @@
 import CartItem from '@/components/CartItem'
 import CustomButton from '@/components/CustomButton'
 import CustomHeader from '@/components/CustomHeader'
+import { images } from '@/constants'
 import { useCartStore } from '@/store/cart.store'
 import { PaymentInfoStripeProps } from '@/type'
 import cn from 'clsx'
 import React from 'react'
-import { FlatList, Text, View } from 'react-native'
+import { FlatList, Image, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 
@@ -41,7 +42,13 @@ const Cart = () => {
         keyExtractor={(item) => item.id}
         contentContainerClassName="pb-28 px-5 pt-5"
         ListHeaderComponent={() => <CustomHeader title= "Your Cart" />}
-        ListEmptyComponent={() => <Text>Cart Empty</Text>}
+        ListEmptyComponent={() => (
+          <View className='flex items-center mt-10'>
+            <Image source={images.emptyCart} 
+              className="w-30 h-30 mb-4" 
+            />
+          </View>
+        )}
         ListFooterComponent={() => totalItems > 0 && (
           <View className='gap-5'>
             <View className='mt-6 border border-gray-200 p-5 rounded-2xl'>

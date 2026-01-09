@@ -34,6 +34,7 @@ import emptyState from "@/assets/images/empty-state.png";
 import fries from "@/assets/images/fries.png";
 
 import backk from "@/assets/images/backk.png";
+import emptyCart from "@/assets/images/emptycart.png";
 import loginGraphic from "@/assets/images/login-graphic.png";
 import logo from "@/assets/images/logo.png";
 import logoo from "@/assets/images/logoo.png";
@@ -207,5 +208,6 @@ export const images = {
     trash,
     backk,
     user,
-    businessman
+    businessman,
+    emptyCart
 };
