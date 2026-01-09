@@ -1,50 +1,50 @@
-# Welcome to your Expo app 👋
+<div align="center">
+  <br />
+      <img src="assets/images/mockup.png" alt="Project Banner">
+    </a>
+  <br />
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
-## Get started
+## Welcome to your StudyBreak-Bite app 👋
 
-1. Install dependencies
+This app is a mobile food discovery and delivery concept designed to focus and promote efficient university food options for the students. The app focuses on providing students their fuel to their studies by allowing them to receive their meals or food to their specific location so they can avoid losing their flow and work without unterruption as well as order their food online for a pickup so they dont have to waste their important time standing in the line jsut to get their food. 
 
-   ```bash
-   npm install
-   ```
 
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Installation Guide
 
 ```bash
-npm run reset-project
+git clone https://github.com/RjGutierrezz/StudyBreak-Bite.git
+
+# Then navigate to the file directory
+cd StudyBreak-Bite
+
+# Since the app database depend on Appwrite, you would need to create .env in the make directory and add the following. (Please replace the project ID with your appwrite ID)
+```bash
+EXPO_PUBLIC_APPWRITE_PROJECT_ID=your_ID_from_appwrite
+EXPO_PUBLIC_APPWRITE_PROJECT_NAME="StudyBreak-Bite"
+EXPO_PUBLIC_APPWRITE_ENDPOINT=https://sfo.cloud.appwrite.io/v1
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+# Type the following to your terminal to give your device permission to run the script file
+```bash
+chmod 755 run.sh
+```
 
-## Learn more
 
-To learn more about developing your project with Expo, look at the following resources:
+# Now run
+```bash
+./run.sh
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+# Finally press i
+```bash
+i
+```
+## Technologies Used 💻
 
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- React Native
+- Typescript
+- Javascript
+- Expo
+- Expo Router
+- Tailwind CSS
