@@ -9,7 +9,7 @@
 
 ## Welcome to my app 👋
 
-This app is a mobile food discovery and delivery concept designed to focus and promote efficient university food options for the students. The app focuses on providing students their fuel to their studies by allowing them to receive their meals or food to their specific location so they can avoid losing their flow and work without unterruption as well as order their food online for a pickup so they dont have to waste their important time standing in the line jsut to get their food. 
+This app is a mobile food discovery and delivery concept designed to support university students by making campus food access faster and more efficient. It helps students stay focused on their studies by enabling food delivery to specific campus locations, reducing interruptions and unnecessary travel. The app also offers online ordering for pickup, allowing students to skip long lines and save valuable time during busy academic schedules.
 
 
 ## Installation Guide
